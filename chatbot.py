@@ -54,7 +54,7 @@ def getBotResponse(client,prompt):
 def main():
     APIKEY=os.environ["OPENAI_API_KEY"]
     if APIKEY is None:
-        st.write("Please set OPENAI_API_KEY environment variable.")
+        raise ValueError("The OPENAI_API_KEY environment variable is not set.")
         return
     
     client = OpenAI()
