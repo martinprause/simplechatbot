@@ -8,10 +8,9 @@ from openai import OpenAI
 import streamlit as st
 
 import os
-APIKEY=os.environ["OPENAI_API_KEY"]
 
 
-client = OpenAI()
+
 
 class MyMessage:
     def __init__(self, name, avatar, message):
@@ -43,7 +42,7 @@ def generateMessages(prompt):
     messages.append(u)
     return messages
 
-def getBotResponse(prompt): 
+def getBotResponse(client,prompt): 
     
     response = client.chat.completions.create(
         model="gpt-4",
@@ -53,9 +52,12 @@ def getBotResponse(prompt):
 
 
 def main():
+    APIKEY=os.environ["OPENAI_API_KEY"]
     if APIKEY is None:
         st.write("Please set OPENAI_API_KEY environment variable.")
         return
+    
+    client = OpenAI()
     st.write("ChatBot")
     reset = st.button("Reset")
 
@@ -69,7 +71,7 @@ def main():
 
     if prompt:
         addMessage(MyMessage("user", "👩‍💻", prompt))
-        addMessage(MyMessage("assistant", "🤖", getBotResponse(prompt)))
+        addMessage(MyMessage("assistant", "🤖", getBotResponse(client,prompt)))
         st.experimental_rerun()
 
 if __name__ == "__main__":
